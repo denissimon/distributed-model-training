@@ -1,0 +1,24 @@
+PODS:
+  - SwiftEvents (1.1.1)
+  - Toast-Swift (5.0.1)
+  - Zip (1.1.0)
+
+DEPENDENCIES:
+  - SwiftEvents (~> 1.1.1)
+  - Toast-Swift (~> 5.0.1)
+  - Zip (~> 1.1)
+
+SPEC REPOS:
+  trunk:
+    - SwiftEvents
+    - Toast-Swift
+    - Zip
+
+SPEC CHECKSUMS:
+  SwiftEvents: 8cefdbeb4e59647e4bca42d6fdd188609ff82684
+  Toast-Swift: 9b6a70f28b3bf0b96c40d46c0c4b9d6639846711
+  Zip: 8877eede3dda76bcac281225c20e71c25270774c
+
+PODFILE CHECKSUM: 37f1048d06af36ee5157a639a0966e7c2365d904
+
+COCOAPODS: 1.8.4

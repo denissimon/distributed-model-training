@@ -1,0 +1,6 @@
+framework module Pods_DMT {
+  umbrella header "Pods-DMT-umbrella.h"
+
+  export *
+  module * { export * }
+}
