@@ -220,8 +220,6 @@ public class HousingModel {
                 return
         }
         
-        print("copyUpdatableModelFromBundleToDataContainer: sourceURL:",sourceURL,"destURL:",destURL)
-        
         if !FileManager.default.fileExists(atPath: destURL.path) {
             do {
                 try FileManager.default.copyItem(at: sourceURL, to: destURL)
@@ -372,7 +370,6 @@ public class HousingModel {
             print("CoreML Error: \(context.task.error.debugDescription)")
             
             if context.task.state != .completed {
-                print("Failed")
                 self.onLogItemAppear.trigger("Training failed")
                 return
             }

@@ -35,12 +35,10 @@ public class ModelBackup {
     }
     
     private func saveModelIdToLocalDB(_ modelId: String) {
-        print("saveModelIdToLocalDB modelId:",modelId)
         LocalDBService.set(value: modelId, forKey: AppConstants.UserDefaults.modelIdKey)
     }
     
     func saveModelBackupSettingToLocalDB(_ value: Bool) {
-        print("saveModelBackupSettingToLocalDB")
         if value {
             LocalDBService.set(value: "On", forKey: AppConstants.UserDefaults.modelBackupKey)
         } else {
@@ -130,7 +128,6 @@ public class ModelBackup {
         if FileManager.default.fileExists(atPath: updatableModelURL.path){
             do {
                 let zipFilePath = try Zip.quickZipFiles([updatableModelURL], fileName: "s4tf_updatable_model")
-                print("zipFilePath:",zipFilePath)
                 let data = try Data(contentsOf: zipFilePath)
                 return data
             } catch (let error){
@@ -167,11 +164,8 @@ public class ModelBackup {
         networkService.requestEndpoint(endpoint, params: params) { [weak self] (result) in
             guard let self = self else { return }
             
-            print("7777777 1111")
-            
             switch result {
             case .done(let responceStatusCode):
-                print("7777777 2222")
                 let statusCodeStr = String.init(data: responceStatusCode, encoding: String.Encoding.utf8)
                 let statusCode = Int.init(statusCodeStr ?? "")
                 if statusCode == 201 {
@@ -185,7 +179,6 @@ public class ModelBackup {
                     self.showErrorToast()
                 }
             case .error(let error):
-                print("7777777 3333")
                 if error != nil {
                     self.showErrorToast(error!.localizedDescription)
                 } else {
@@ -205,7 +198,6 @@ public class ModelBackup {
             showErrorToast()
             return
         }
-        print("modelIdEscaped:",modelIdEscaped)
         
         let endpoint = AppAPI.restoreModel(id: modelIdEscaped)
         
