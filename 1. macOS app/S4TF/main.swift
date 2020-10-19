@@ -2,7 +2,7 @@ import Foundation
 import TensorFlow
  
 // 1. Data Ingestion
-let filePath = Bundle.main.url(forResource: "housing", withExtension: "csv")
+let filePath = Bundle.main.url(forResource: "housing", withExtension: "csv") // https://archive.ics.uci.edu/ml/machine-learning-databases/housing/
 let data = try! String(contentsOf: filePath!, encoding: String.Encoding.utf8)
  
 let dataRecords: [[Float]] = data.split(separator: "\n").map{ String($0).split(separator: " ").compactMap{ Float(String($0)) } }
@@ -23,7 +23,7 @@ let dataLabels = randomDataRecords.map{ Array($0[(numColumns-1)...]) }
  
 // 2. Data Transformation
  
-// 2.1. Split Numerical Categorical Features
+// 2.1. Split numerical categorical features
 let categoricalColumns = [3, 8]
 let numericalColumns = [0, 1, 2, 4, 5, 6, 7, 9, 10, 11, 12]
 let numCategoricalFeatures = categoricalColumns.count
@@ -32,7 +32,7 @@ let numLabels = 1
  
 assert(numColumns == numCategoricalFeatures + numNumericalFeatures + 1)
  
-// 2.2. Get Categorical Features
+// 2.2. Get categorical features
 let allCategoriesValues = dataFeatures.map{ row in categoricalColumns.map{ Int32(row[$0]) } }
                                 .reduce(into: Array(repeating: [Int32](), count: 2)){ total, value in
                                     total[0].append(value[0])
@@ -41,10 +41,10 @@ let allCategoriesValues = dataFeatures.map{ row in categoricalColumns.map{ Int32
  
 let categoricalFeatures = dataFeatures.map{ row in categoricalColumns.map{ Int32(row[$0]) } }
  
-// 2.3. Get Numerical Features
+// 2.3. Get numerical features
 let numericalFeatures = dataFeatures.map{ row in numericalColumns.map{ row[$0] } }
  
-// 2.4. Categorize Categorical Features with Ordinal values
+// 2.4. Categorize categorical features with ordinal values
  
 var categoricalValues = Array(repeating: Set<Int32>(), count: 2)
  
@@ -58,7 +58,7 @@ let sortedCategoricalValues = [categoricalValues[0].sorted(), categoricalValues[
 let ordinalCategoricalFeatures = categoricalFeatures.map{ [Int32(sortedCategoricalValues[0].firstIndex(of:$0[0])!),
                                                            Int32(sortedCategoricalValues[1].firstIndex(of:$0[1])!)] }
  
-// 2.5. Split Train and Test
+// 2.5. Split the dataset into train and test
  
 let trainPercentage:Float = 0.8
 let numTrainRecords = Int(ceil(Float(numRecords) * trainPercentage))
@@ -92,7 +92,7 @@ let XNumericalTestDeNorm = Tensor<Float>(xNumericalAllTest).reshaped(to: TensorS
 let YTrain = Tensor<Float>(yAllTrain).reshaped(to: TensorShape([numTrainRecords, numLabels]))
 let YTest = Tensor<Float>(yAllTest).reshaped(to: TensorShape([numTestRecords, numLabels]))
  
-// 2.6. Normalize Numerical Features
+// 2.6. Normalize numerical features
  
 let mean = XNumericalTrainDeNorm.mean(alongAxes: 0)
 let std = XNumericalTrainDeNorm.standardDeviation(alongAxes: 0)
@@ -200,7 +200,7 @@ for epoch in 1...epochCount {
     print("Epoch \(epoch): MSE: \(epochLoss), MAE: \(epochMAE)")
 }
  
-// 4.1. Test trained model
+// 4.1. Test the trained model
  
 Context.local.learningPhase = .inference
  
@@ -217,7 +217,7 @@ print("MSE: \(predictionMse), MAE: \(predictionMae)")
 // => MSE: 0.18782271, MAE: 0.025332946
  
  
-// 5. Export trained model
+// 5. Export parameters of the trained model
  
 print(model.embedding1.embeddings.shape, model.embedding2.embeddings.shape)
 // => [2, 2] [9, 5]

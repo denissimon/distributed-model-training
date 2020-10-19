@@ -12,7 +12,6 @@ struct AppConstants {
     
     struct AppAPI {
         static let ApiKey = "8ca557bca17ab957b6184f458af1e48"
-        //static let BaseURL = "https://169.254.168.127/"
         static let BaseURL = "https://us-central1-distributed-model-training.cloudfunctions.net"
     }
     
