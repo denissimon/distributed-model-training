@@ -1,6 +1,6 @@
 # distributed-model-training
 
-This project aims to show an approach and mechanisms to implementing distributed training of a machine learning model - server/device training for iOS.
+This project aims to show an approach and mechanisms for implementing distributed training of a machine learning model - server/device training for iOS.
 
 [`Swift for TensorFlow`](https://github.com/tensorflow/swift) is used for creating a pre-trained [foundation](https://en.wikipedia.org/wiki/Foundation_model) ML model on [shared/proxy data](https://github.com/denissimon/distributed-model-training/blob/master/1.%20macOS%20app/S4TF/housing.csv). This training takes place on a server or local Mac. Then `Google Colab` and `protobuf` are used for recreating (reusing the part of weights), making `updatable`, and exporting the pre-trained model in [`.mlmodel`](https://apple.github.io/coremltools/docs-guides/source/mlmodel.html) format. The updatable pre-trained model is delivered to devices with new versions of the app. [`Core ML`](https://developer.apple.com/documentation/coreml) is used for on-device retraining on user data, so they do not leave the device, ensuring a high level of privacy, and also for inference (making predictions). [`Transfer learning`](https://en.wikipedia.org/wiki/Transfer_learning), [`online learning`](https://en.wikipedia.org/wiki/Online_machine_learning) and [`model personalization`](https://developer.apple.com/documentation/coreml/model-personalization) concepts are used for this process as well.
 
@@ -26,7 +26,7 @@ Schematically, this approach can be represented as follows:
 
 ### About the dataset and model
 
-To demonstrate the work of the presented approach, a suitable dataset is used – [Boston House Prices](https://www.kaggle.com/datasets/vikrishnan/boston-house-prices) from the UCI Machine Learning Repository. Number of observations: 506. Number of features: 13 (including 11 numeric and 2 categorical (CHAS and RAD)); 14th column (MEDV) – price value.
+To demonstrate the work of the presented approach, a suitable dataset is used – [Boston House Prices](https://www.kaggle.com/datasets/vikrishnan/boston-house-prices) from the UCI Machine Learning Repository. Number of observations: 506. Number of features: 13 (including 11 numerical and 2 categorical (CHAS and RAD)); 14th column (MEDV) – price value.
 
 On the server part, 2 pre-trained ML models are created:
 - `s4tf_pre_trained_model.mlmodel` is non-updatable foundation model trained on common/proxy data
@@ -70,7 +70,7 @@ To speed up data collection for the foundation model and regularly improve its q
 
 - user data are `modified` (originals are not sent from the device). For example, for text data - nouns/verbs are changed to synonyms from WordNet; for images - blur filters, color correction, etc. are applied; for audio - change of tonality, speed, as well as noise imposition, etc.
 - user data are `anonymized` (using such [`data anonymization`](https://en.wikipedia.org/wiki/Data_anonymization) techniques as k-anonymity, [differential privacy](https://en.wikipedia.org/wiki/Differential_privacy), etc.) or `encrypted` before being sent to the server - in this case, data storage and model training on the server occurs in the same anonymized/encrypted form
-- only a part of the user data are sent so that their overall high privacy is still maintained. The other part still never leaves the device in any form.
+- only a part of the user data are sent so that their overall high privacy is still maintained. The other part never leaves the device in any form.
 
 When an improved pre-trained model is received on the device again, the app replaces the user model with it, which is then first retrained and re-personalized on all or part of user data (unshared data only) stored in the local DB.
 
